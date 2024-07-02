@@ -30,6 +30,12 @@ jobs:
         run: |
           cd src/zenboard
           composer update -oW --ignore-platform-reqs
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
       - name: Build Composer
         run: |
           composer install -o
