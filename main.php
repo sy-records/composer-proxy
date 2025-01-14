@@ -34,6 +34,7 @@ foreach ($finder as $value) {
             $cmd   = "cd {$realDir} && zip -r {$build} .";
             @exec($cmd);
 
+            $output = [];
             $cmd = "cd build && curl -T {$name}.zip -u {$login}:{$password} {$url}?version={$version}";
             @exec($cmd, $output);
             echo implode("\n", $output) . "\n";
