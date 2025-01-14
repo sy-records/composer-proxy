@@ -2,7 +2,11 @@ name: Push Proxies to Coding from Packagist
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -12,11 +16,9 @@ env:
 
 jobs:
   run:
-    name: Push Proxies to Coding from Packagist
-    runs-on: "${{ matrix.os }}"
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
         php-version: [ '7.0', '7.1', '7.2', '8.1' ]
     steps:
       - name: Checkout code
@@ -29,6 +31,8 @@ jobs:
       - name: Pull Composer
         run: |
           cd src/zenboard
+          composer update -oW --ignore-platform-reqs
+          cd ../control
           composer update -oW --ignore-platform-reqs
 
       - name: Setup PHP
