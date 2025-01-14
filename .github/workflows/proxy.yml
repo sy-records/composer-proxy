@@ -1,8 +1,12 @@
 name: Push Proxies to Coding from Packagist
 
 on:
-  push: [ 'main' ]
-  pull_request: [ 'main' ]
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
