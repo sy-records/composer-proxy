@@ -1,8 +1,8 @@
 name: Push Proxies to Coding from Packagist
 
 on:
-  push:
-  pull_request:
+  push: [ 'master' ]
+  pull_request: [ 'master' ]
   workflow_dispatch:
 
 env:

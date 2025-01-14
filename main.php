@@ -8,9 +8,9 @@ $finder = Finder::create()
     ->in(__DIR__ . '/src')
     ->path('/^[\w-]+\/composer\.lock/');
 
-$url      = getenv("CODING_URL");
-$login    = getenv("CODING_LOGIN");
-$password = getenv("CODING_PASSWORD");
+$url      = getenv('CODING_URL');
+$login    = getenv('CODING_LOGIN');
+$password = getenv('CODING_PASSWORD');
 
 foreach ($finder as $value) {
     $json = json_decode(
@@ -25,6 +25,7 @@ foreach ($finder as $value) {
         $packageUrl = $package['dist']['url'] ?? null;
 
         if ($name && $version && $packageUrl) {
+            echo "Processing {$name} {$version}\n";
             $dir     = dirname($name);
             $realDir = dirname($value->getRealPath()) . '/vendor/' . $name;
             @mkdir(__DIR__ . '/build/' . $dir, 0777, true);
@@ -34,7 +35,8 @@ foreach ($finder as $value) {
             @exec($cmd);
 
             $cmd = "cd build && curl -T {$name}.zip -u {$login}:{$password} {$url}?version={$version}";
-            @exec($cmd);
+            @exec($cmd, $output);
+            echo implode("\n", $output) . "\n";
         }
     }
 }
