@@ -15,7 +15,7 @@
     "ext-swoole": ">=4.4",
     "simple-swoole/simps": "~1.0.0",
     "simple-swoole/db": "~1.0.0",
-    "smi2/phpclickhouse": "dev-master",
+    "smi2/phpclickhouse": "^1.6",
     "kkgroup/validation": "^0.2.0",
     "symfony/yaml": "^7.2",
     "ext-redis": "*",
