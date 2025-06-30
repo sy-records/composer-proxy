@@ -8,9 +8,9 @@ $finder = Finder::create()
     ->in(__DIR__ . '/src')
     ->path('/^[\w-]+\/composer\.lock/');
 
-$url      = getenv('CODING_URL');
-$login    = getenv('CODING_LOGIN');
-$password = getenv('CODING_PASSWORD');
+$url      = getenv('CNB_URL');
+$login    = getenv('CNB_LOGIN');
+$password = getenv('CNB_PASSWORD');
 
 foreach ($finder as $value) {
     $json = json_decode(
@@ -35,7 +35,7 @@ foreach ($finder as $value) {
             @exec($cmd);
 
             $output = [];
-            $cmd = "cd build && curl -T {$name}.zip -u {$login}:{$password} {$url}?version={$version}";
+            $cmd = "cd build && curl -T {$name}.zip -u {$login}:{$password} {$url}/{$name}/{$version}";
             @exec($cmd, $output);
             echo implode("\n", $output) . "\n";
         }

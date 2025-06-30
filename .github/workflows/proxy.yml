@@ -1,4 +1,4 @@
-name: Push Proxies to Coding from Packagist
+name: Push Proxies to CNB from Packagist
 
 on:
   push:
@@ -10,9 +10,9 @@ on:
   workflow_dispatch:
 
 env:
-  CODING_URL: ${{ secrets.CODING_URL }}
-  CODING_LOGIN: ${{ secrets.CODING_LOGIN }}
-  CODING_PASSWORD: ${{ secrets.CODING_PASSWORD }}
+  CNB_URL: ${{ secrets.CNB_URL }}
+  CNB_LOGIN: ${{ secrets.CNB_LOGIN }}
+  CNB_PASSWORD: ${{ secrets.CNB_PASSWORD }}
 
 jobs:
   run:
