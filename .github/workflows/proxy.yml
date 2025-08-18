@@ -4,10 +4,20 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+    paths:
+      - 'src/**'
   workflow_dispatch:
+    inputs:
+      project:
+        description: "Select project to build"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - zenboard
+          - control
+          - topthink
 
 env:
   CNB_URL: ${{ secrets.CNB_URL }}
@@ -19,28 +29,41 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ '7.0', '7.1', '7.2', '8.1' ]
+        php-version: [ '7.0', '7.1', '7.2', '7.3', '8.1' ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup PHP
+
+      - name: Setup PHP ${{ matrix.php-version }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           coverage: none
-      - name: Pull Composer
-        run: |
-          cd src/zenboard
-          composer update -oW --ignore-platform-reqs
-          cd ../control
-          composer update -oW --ignore-platform-reqs
 
-      - name: Setup PHP
+      - name: Install composer deps for selected project(s)
+        run: |
+          PROJECT="${{ github.event.inputs.project || 'all' }}"
+
+          for dir in src/*; do
+            echo $dir
+            if [ -d "$dir" ]; then
+              name=$(basename "$dir")
+              if [[ "$PROJECT" == "all" || "$PROJECT" == "$name" ]]; then
+                echo "🔧 Building project: $name"
+                cd "$dir"
+                composer update -oW --ignore-platform-reqs
+                cd - >/dev/null
+              fi
+            fi
+          done
+
+      - name: Setup PHP 8.1
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
           coverage: none
-      - name: Build Composer
+
+      - name: Upload to CNB
         run: |
           composer install -o
           php main.php
