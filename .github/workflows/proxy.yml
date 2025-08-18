@@ -45,7 +45,6 @@ jobs:
           PROJECT="${{ github.event.inputs.project || 'all' }}"
 
           for dir in src/*; do
-            echo $dir
             if [ -d "$dir" ]; then
               name=$(basename "$dir")
               if [[ "$PROJECT" == "all" || "$PROJECT" == "$name" ]]; then
